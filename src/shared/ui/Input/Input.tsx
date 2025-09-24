@@ -1,17 +1,17 @@
-import { classNames } from "shared/lib/classNames/classNames";
-import cls from "./input.module.scss";
+import { classNames } from 'shared/lib/classNames/classNames';
 import React, {
-  HtmlHTMLAttributes,
-  InputHTMLAttributes,
-  memo,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+    HtmlHTMLAttributes,
+    InputHTMLAttributes,
+    memo,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+import cls from './Input.module.scss';
 
 type HTMLInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "value" | "onChange"
+  'value' | 'onChange'
 >;
 
 interface InputProps extends HTMLInputProps {
@@ -22,70 +22,70 @@ interface InputProps extends HTMLInputProps {
 }
 
 export const Input = memo((props: InputProps) => {
-  const {
-    className,
-    value,
-    onChange,
-    type = "text",
-    placeholder,
-    autoFocus,
-    ...otherProps
-  } = props;
+    const {
+        className,
+        value,
+        onChange,
+        type = 'text',
+        placeholder,
+        autoFocus,
+        ...otherProps
+    } = props;
 
-  const ref = useRef<HTMLInputElement>(null);
+    const ref = useRef<HTMLInputElement>(null);
 
-  const [isFocused, setIsFocused] = useState(false);
-  // позиция корретки
-  const [caretPosition, setcaretPosition] = useState(0);
+    const [isFocused, setIsFocused] = useState(false);
+    // позиция корретки
+    const [caretPosition, setcaretPosition] = useState(0);
 
-  useEffect(() => {
-    if (autoFocus) {
-      setIsFocused(true);
-      ref.current?.focus();
-    }
-  }, [autoFocus]);
+    useEffect(() => {
+        if (autoFocus) {
+            setIsFocused(true);
+            ref.current?.focus();
+        }
+    }, [autoFocus]);
 
-  const onBlur = () => {
-    setIsFocused(false);
-  };
+    const onBlur = () => {
+        setIsFocused(false);
+    };
 
-  const onFocus = () => {
-    setIsFocused(true);
-  };
+    const onFocus = () => {
+        setIsFocused(true);
+    };
 
-  const onSelect = (e: any) => {
-    setcaretPosition(e?.target?.selectionStart || 0);
-  };
+    const onSelect = (e: any) => {
+        setcaretPosition(e?.target?.selectionStart || 0);
+    };
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e.target.value);
-    setcaretPosition(e.target.value.length);
-  };
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(e.target.value);
+        setcaretPosition(e.target.value.length);
+    };
 
-  return (
-    <div className={classNames(cls.InputWrapper, {}, [className])}>
-      {placeholder && (
-        <div className={cls.placeholder}>{`${placeholder}>`}</div>
-      )}
-      <div className={cls.caretWrapper}>
-        <input
-          type={type}
-          value={value}
-          onChange={onChangeHandler}
-          className={cls.input}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          onSelect={onSelect}
-          ref={ref}
-          {...otherProps}
-        />
-        {isFocused && (
-          <span
-            className={cls.caret}
-            style={{ left: `${caretPosition * 9}px` }}
-          ></span>
-        )}
-      </div>
-    </div>
-  );
+    return (
+        <div className={classNames(cls.InputWrapper, {}, [className])}>
+            {placeholder && (
+                <div className={cls.placeholder}>{`${placeholder}>`}</div>
+            )}
+            <div className={cls.caretWrapper}>
+                <input
+                    type={type}
+                    value={value}
+                    onChange={onChangeHandler}
+                    className={cls.input}
+                    onBlur={onBlur}
+                    onFocus={onFocus}
+                    onSelect={onSelect}
+                    ref={ref}
+                    {...otherProps}
+                />
+                {isFocused && (
+                    <span
+                        className={cls.caret}
+                        style={{ left: `${caretPosition * 9}px` }}
+                    />
+                )}
+            </div>
+        </div>
+    );
 });
